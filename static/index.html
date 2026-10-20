@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b1020">
+    <meta name="description" content="HoldOn helps you inspect suspicious messages and identify common scam warning signs.">
+    <title>HoldOn — Your Digital Safety Assistant</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/script.js" defer></script>
+</head>
+<body>
+    <header class="navbar">
+        <a class="brand" href="/" aria-label="HoldOn home">
+            <span class="brand-icon">H</span>
+            <span>Hold<span class="brand-highlight">On</span></span>
+        </a>
+
+        <div class="nav-right">
+            <span class="nav-label">
+                <span class="status-dot"></span>
+                Safety assistant
+            </span>
+            <span class="simulation-label">ALEXA+ STYLE DEMO</span>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div class="eyebrow">✦ YOUR DIGITAL SAFETY COMPANION</div>
+            <h1>When in doubt,<br><span class="gradient-text">HoldOn.</span></h1>
+            <p class="hero-description">
+                A message says you've won a prize. Your bank needs an OTP.
+                Someone wants an urgent payment. Pause here before you act.
+            </p>
+        </section>
+
+        <section class="assistant-layout">
+            <div class="checker-card">
+                <div class="card-heading">
+                    <div>
+                        <span class="section-label">YOUR CONVERSATION</span>
+                        <h2>Let's check that message.</h2>
+                        <p>Paste the suspicious message below. I'll inspect it for common warning signs.</p>
+                    </div>
+                    <span class="shield-icon" aria-hidden="true">♢</span>
+                </div>
+
+                <div class="assistant-intro">
+                    <div class="assistant-avatar" aria-hidden="true">H</div>
+                    <div class="assistant-bubble">
+                        <strong>HoldOn Assistant</strong>
+                        <p>I'm ready to help you check a message. I won't assume it's safe just because no warning signs are found.</p>
+                    </div>
+                </div>
+
+                <form id="analyze-form">
+                    <label for="message-input">SUSPICIOUS MESSAGE</label>
+
+                    <textarea
+                        id="message-input"
+                        name="message"
+                        placeholder="Paste an SMS, WhatsApp message, email, or suspicious text here..."
+                        maxlength="10000"
+                        required
+                    ></textarea>
+
+                    <div class="input-footer">
+                        <span id="char-count">0 / 10000 characters</span>
+                        <button type="button" id="clear-button" class="clear-button">
+                            Clear message
+                        </button>
+                    </div>
+
+                    <button type="submit" id="analyze-button" class="analyze-button">
+                        <span id="button-icon" aria-hidden="true">⌕</span>
+                        <span id="button-text">Check this message</span>
+                        <span aria-hidden="true">→</span>
+                    </button>
+                </form>
+
+                <div class="quick-tests">
+                    <span>TRY AN EXAMPLE</span>
+
+                    <button
+                        type="button"
+                        class="example-button"
+                        data-example="Congratulations! You won a cash reward. Pay a processing fee to claim your prize."
+                    >
+                        Prize scam
+                    </button>
+
+                    <button
+                        type="button"
+                        class="example-button"
+                        data-example="Your bank account will be blocked. Share your OTP immediately."
+                    >
+                        OTP request
+                    </button>
+
+                    <button
+                        type="button"
+                        class="example-button"
+                        data-example="Hi! Are we still meeting at the library at 4 PM today?"
+                    >
+                        Normal message
+                    </button>
+                </div>
+
+                <p class="privacy-note">
+                    ♧ This demo uses rule-based checks and an experimental ML model, not a guarantee of safety.
+                </p>
+            </div>
+
+            <aside class="activity-card" aria-labelledby="activity-title">
+                <div class="activity-heading">
+                    <div class="activity-icon" aria-hidden="true">⌘</div>
+                    <div>
+                        <h2 id="activity-title">Behind the scenes</h2>
+                        <p>HoldOn tool activity</p>
+                    </div>
+                </div>
+
+                <div class="connection-status">
+                    <span class="status-dot"></span>
+                    <span id="connection-label">Ready for a message</span>
+                </div>
+
+                <p class="activity-description">
+                    The website requests analysis from the HoldOn MCP server,
+                    which provides scam warning signs and safety advice.
+                    An experimental ML model adds a separate text classification.
+                </p>
+
+                <div class="tool-list">
+                    <div class="tool-item" id="tool-detection">
+                        <span class="tool-number">01</span>
+                        <div class="tool-info">
+                            <strong>Scam detection</strong>
+                            <code>check_suspicious_message</code>
+                            <span class="tool-status" id="detection-status">Waiting</span>
+                        </div>
+                    </div>
+
+                    <div class="tool-item" id="tool-advice">
+                        <span class="tool-number">02</span>
+                        <div class="tool-info">
+                            <strong>Safety advice</strong>
+                            <code>get_safe_next_steps</code>
+                            <span class="tool-status" id="advice-status">Waiting</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-footer">
+                    <span class="activity-pulse"></span>
+                    <span>Live activity updates when you analyze a message</span>
+                </div>
+            </aside>
+        </section>
+
+        <section id="results" class="results-card" hidden aria-live="polite">
+            <div class="results-heading">
+                <div>
+                    <p class="section-label">YOUR MESSAGE REVIEW</p>
+                    <h2>Here's what I found.</h2>
+                </div>
+                <span id="risk-badge" class="risk-badge">Checking</span>
+            </div>
+
+            <p id="result-message" class="result-message"></p>
+
+            <div class="result-stats">
+                <div class="stat-box">
+                    <span class="stat-label">RISK LEVEL</span>
+                    <strong id="risk-value">—</strong>
+                </div>
+
+                <div class="stat-box">
+                    <span class="stat-label">WARNING SIGNS</span>
+                    <strong id="warning-count">0</strong>
+                </div>
+            </div>
+
+            <div class="result-section">
+                <h3>What I noticed</h3>
+                <div id="warning-list" class="warning-list"></div>
+            </div>
+
+            <section id="ml-analysis" class="result-section ml-analysis" aria-labelledby="ml-title">
+                <h3 id="ml-title">Experimental ML Signal</h3>
+
+                <p id="ml-prediction" class="ml-prediction">
+                    The model prediction will appear here after analysis.
+                </p>
+
+                <p id="ml-score" class="ml-score"></p>
+
+                <p id="ml-disclaimer" class="ml-disclaimer">
+                    This experimental model was trained on a very small sample dataset.
+                    Its score is not verified scam-detection accuracy or a calibrated
+                    probability of fraud. A prediction cannot prove a message is safe
+                    or fraudulent.
+                </p>
+            </section>
+
+            <div class="result-section">
+                <h3>Your safer next steps</h3>
+                <ul id="next-steps" class="next-steps"></ul>
+            </div>
+
+            <p class="disclaimer">
+                HoldOn uses rule-based checks and an experimental ML model.
+                A high-risk result is a warning, not proof of fraud.
+                A low-risk result does not guarantee safety.
+                Verify important requests independently.
+            </p>
+        </section>
+
+        <section class="features">
+            <div class="feature">
+                <span class="feature-icon">⌕</span>
+                <h3>Spot warning signs</h3>
+                <p>Inspect message wording and links for common scam indicators.</p>
+            </div>
+
+            <div class="feature">
+                <span class="feature-icon">◇</span>
+                <h3>See the evidence</h3>
+                <p>Understand which phrases triggered a warning and why.</p>
+            </div>
+
+            <div class="feature">
+                <span class="feature-icon">✓</span>
+                <h3>Choose safer actions</h3>
+                <p>Get practical advice before sharing information or sending money.</p>
+            </div>
+        </section>
+
+        <footer>
+            <a class="brand footer-brand" href="/">
+                <span class="brand-icon">H</span>
+                <span>Hold<span class="brand-highlight">On</span></span>
+            </a>
+
+            <p>Pause. Check. Protect yourself.</p>
+            <span class="footer-note">An Alexa+-style simulated experience</span>
+        </footer>
+    </main>
+</body>
+</html>
